@@ -1,0 +1,72 @@
+0. Lépés: A Word dokumentum előkészítése
+1.	Nyiss meg egy üres Word dokumentumot a saját gépeden (nem a virtuálison!).
+2.	Azonnal mentsd el ezzel a névvel: SAJÁT_NÉVED_SZERVER_FELADAT.docx.
+3.	Írd be a lap tetejére a nevedet és a dátumot.
+1. Lépés: Active Directory telepítése és erdő létrehozása
+Kattintásról kattintásra:
+1.	A virtuális gépen lépj be (Password123). Automatikusan megnyílik a Server Manager. Ha mégsem, a Start menüből indítsd el.
+2.	Kattints a jobb felső sarokban az Manage -> Add Roles and Features gombra.
+3.	Next, Next, Next (hagyd az alapértelmezetten a Server Selection-t).
+4.	A Server Roles listában pipáld ki ezt: Active Directory Domain Services.
+5.	Felugrik egy kis ablak. Kattints az Add Features gombra, majd Next, Next, Next.
+6.	Elérkezel a Confirmation lapra. STOP! > 📸 1. KÉP: Nyomj egy Print Screen-t a billentyűzeten, és illeszd be a Wordbe! (Ez igazolja a szerepkör kijelölését).
+7.	Kattints az Install gombra. Várd meg, amíg a kék csík végigér.
+Előléptetés tartományvezérlővé:
+1.	Ha kész, a Server Manager tetején a sárga felkiáltójeles zászlóra kattints.
+2.	Válszd a Promote this server to a domain controller feliratot.
+📸 2. KÉP: Csinálj egy képernyőképet a lenyílt zászlós menüről, ahol látszik ez a felirat, mielőtt rákattintasz.
+3.	A megnyíló ablakban válaszd az Add a new forest (Új erdő hozzáadása) opciót.
+4.	A Root domain name mezőbe gépeld be: minta.helyi
+📸 3. KÉP: Fotózd le ezt az ablakot, ahol a minta.helyi be van írva.
+5.	Kattints a Next-re. A jelszó mezőkbe (DSRM) írd be: Password123 (lent és fent is).
+6.	Nyomkodj Next-et egészen az Install gombig. A telepítés után a gép magától újra fog indulni. Ez eltarthat pár percig.
+2. Lépés: Az egyedi konzol (MMC) elkészítése
+1.	Miután újraindult a gép, lépj be. (Most már MINTA\Rendszergazda vagy MINTA\Administrator néven fog beléptetni).
+2.	Nyomd meg a Win + R gombot a billentyűzeten, írd be: mmc, majd Enter.
+3.	Kattints a File -> Add/Remove Snap-in... menüpontra.
+4.	A bal oldali listából kattints a DNS-re, majd a középső Add > gombra. A felugró ablakban csak nyomj egy Finish-t (This computer).
+5.	Keresd meg a Performance Monitor-t, kattints az Add > gombra, majd Finish.
+6.	Keresd meg a Group Policy Management-et, kattints az Add > gombra.
+7.	Kattints az OK gombra az ablak alján.
+📸 4. KÉP: Csinálj egy képet a teljes ablakról, ahol a bal oldali sávban látni a három hozzáadott modult.
+3. Lépés: Szervezeti egységek (OU) felépítése
+1.	A Server Managerben kattints a Tools (Eszközök) -> Active Directory Users and Computers opcióra.
+2.	A bal sávban kattints a kis nyílra a minta.helyi mellett, hogy kinyíljon.
+3.	Kattints jobb gombbal a minta.helyi feliratra -> New -> Organizational Unit.
+4.	Név: igazgatóság, majd OK.
+5.	Kattints újra jobb gombbal a minta.helyi-re -> New -> Organizational Unit.
+6.	Név: mérnökök, majd OK.
+7.	Most kattints jobb gombbal a frissen létrehozott mérnökök mappára -> New -> Organizational Unit.
+8.	Név: tervezés, majd OK.
+9.	Kattints megint jobb gombbal a mérnökök mappára -> New -> Organizational Unit.
+10.	Név: gyártás, majd OK.
+📸 5. KÉP: Kattints rá a bal oldali fában a mérnökök mappára, hogy kinyíljon, és látszódjon a fa struktúrája (igazgatóság, mérnökök, azon belül tervezés és gyártás). Fotózd le!
+4. Lépés: Felhasználók és Csoportok
+Felhasználók:
+1.	Kattints a bal oldalon az igazgatóság mappára. A jobb oldali üres részen kattints jobb gombbal -> New -> User.
+a.	First name: Áron | Last name: Minta | User logon name: minta.aron. Next.
+b.	Jelszó: Vizsga2026 (írd be kétszer).
+c.	Vedd ki a pipát a legfelső dobozból (User must change password...). Next, majd Finish.
+2.	Kattints a bal oldalon a mérnökök -> tervezés mappára. Jobb klikk az üres részen -> New -> User.
+a.	First name: Péter | Last name: Tó | User logon name: to.peter. Next.
+b.	Jelszó: Vizsga2026.
+c.	Vedd ki a pipát az első dobozból. Next, Finish.
+📸 6. KÉP: Fotózd le az igazgatóság mappa tartalmát (látszódjon Minta Áron), és a tervezés mappa tartalmát (látszódjon Tó Péter).
+Csoportok:
+1.	Jobb klikk az igazgatóság mappában -> New -> Group.
+a.	Group name: Vezetés
+b.	Group scope: Domain local | Group type: Security. OK.
+2.	Jobb klikk a mérnökök mappában -> New -> Group.
+a.	Group name: Mérnökök
+b.	Group scope: Global | Group type: Security. OK.
+3.	Jobb klikk újra a mérnökök mappában -> New -> Group.
+a.	Group name: Levelezés
+b.	Group scope: Domain local | Group type: Distribution. OK.
+📸 7. KÉP: Csinálj egy képet a mérnökök mappa tartalmáról, ahol látszik a két új csoport, és a táblázat oszlopaiban tisztán olvasható a Type és a Scope (Hatókör).
+Tagságok beállítása:
+1.	Kattints duplán a Vezetés csoportra (az igazgatóság mappában).
+2.	Menj a Members fülre -> Add... -> Írd be: minta.aron -> Kattints a Check Names gombra (aláhúzza a nevet) -> OK. Kattints az Apply gombra.
+3.	Menj a Mérnökök csoportra (a mérnökök mappában), kattints duplán -> Members fül -> Add... -> Írd be: to.peter -> Check Names -> OK -> Apply.
+4.	Menj a Levelezés csoportra, kattints duplán -> Members fül -> Add... -> Írd be: to.peter -> Check Names -> OK -> Apply.
+📸 8. KÉP: Nyisd meg a csoportok tulajdonságait egymás után, és a Members fülről (ahol látszanak a tagok) készíts képeket a dokumentumba.
+
