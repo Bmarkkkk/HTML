@@ -1,0 +1,154 @@
+interface GigabitEthernet0/0
+ no shutdown
+
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.5.254 255.255.255.0
+
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.21.254 255.255.255.0
+
+interface GigabitEthernet0/0.40
+ encapsulation dot1Q 40
+ ip address 192.168.30.62 255.255.255.192
+
+interface GigabitEthernet0/0.1000
+ encapsulation dot1Q 1000 native
+
+! Kizárt címek (1-5-ig)
+ip dhcp excluded-address 192.168.21.1 192.168.21.5
+ip dhcp excluded-address 192.168.30.1 192.168.30.5
+
+! HR DHCP Pool
+ip dhcp pool HR_POOL
+ network 192.168.21.0 255.255.255.0
+ default-router 192.168.21.254
+ dns-server 9.9.9.9
+
+! SALES DHCP Pool
+ip dhcp pool SALES_POOL
+ network 192.168.30.0 255.255.255.192
+ default-router 192.168.30.62
+ dns-server 9.9.9.9
+
+
+username BUDAPEST password cisco
+
+interface Serial0/0/0
+ ip address 10.0.0.1 255.255.255.252
+ encapsulation ppp
+ ppp authentication chap
+ no shutdown
+
+
+vlan 10
+ name ADMIN
+vlan 20
+ name HR
+vlan 40
+ name SALES
+vlan 1000
+ name NATIVE
+vlan 99
+ name Black_Hole
+exit
+
+
+
+
+! ADMIN portok
+interface range fa0/5 - 10
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+
+! HR portok
+interface range fa0/11 - 15
+ switchport mode access
+ switchport access vlan 20
+ spanning-tree portfast
+
+! SALES portok
+interface range fa0/16 - 20
+ switchport mode access
+ switchport access vlan 40
+ spanning-tree portfast
+
+! Trunk portok (a Router és a másik Switch felé, pl. fa0/1 és gig0/1)
+interface range fa0/1 , gig0/1
+ switchport mode trunk
+ switchport trunk native vlan 1000
+
+! Nem használt portok letiltása (Feltételezve a maradék portokat)
+interface range fa0/2 - 4 , fa0/21 - 24 , gig0/2
+ switchport mode access
+ switchport access vlan 99
+ shutdown
+
+
+
+interface vlan 10
+ ip address 192.168.5.2 255.255.255.0
+ no shutdown
+
+ip default-gateway 192.168.5.254
+
+
+interface vlan 10
+ ip address 192.168.5.3 255.255.255.0
+ no shutdown
+
+ip default-gateway 192.168.5.254
+
+
+
+username MISKOLC password cisco
+
+interface Serial0/0/0
+ ip address 10.0.0.2 255.255.255.252
+ encapsulation ppp
+ ppp authentication chap
+ no shutdown
+
+
+interface GigabitEthernet0/0
+ ip address 172.16.10.1 255.255.255.252
+ no shutdown
+
+
+
+
+Internet Setup (WAN):
+
+Connection Type: Static IP
+
+IP Address: 172.16.10.2
+
+Subnet Mask: 255.255.255.252
+
+Default Gateway: 172.16.10.1
+
+Network Setup (LAN & DHCP):
+
+IP Address: 192.168.200.1
+
+Subnet Mask: 255.255.255.0
+
+DHCP Server: Enabled
+
+Start IP Address: 192.168.200.110
+
+Maximum Number of Users: 11 (Így pont a 110 és 120 közötti címeket fogja kiosztani)
+
+Wireless -> Basic Wireless Settings:
+
+Network Name (SSID): teszt
+
+Wireless -> Wireless Security:
+
+Security Mode: WPA2 Personal (vagy WPA2-PSK)
+
+Encryption: AES
+
+Passphrase / Password: Pool
