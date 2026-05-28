@@ -1,0 +1,75 @@
+mappák létrehozása
+
+mkdir proba
+mkdir archiv
+mkdir proba/archiv  
+
+Fájl létrehozása
+
+nano/proba/masolando/minta.txt
+
+
+mappa torles
+
+rm -R mappa_neve/
+
+masolat es atnevezese
+
+Fájl másolása és átnevezése ugyanabban a mappában:
+cp adat.txt adat_uj.txt
+
+Fájl másolása és átnevezése egy másik mappába:
+cp /mappa1/adat.txt /mappa2/adat_uj.txt
+
+sudo groupadd [csoport_neve]
+
+Felhasznalo
+sudo useradd -m(home mappa) -g group neve -G masodlagos g felhasznev
+
+
+hozzaferesek
+sudo chown minta1 mintafajl.txt
+sudo chmod u=rwx  mintafajl.tx
+	go=rx  mintafajl.txt
+cd.. visszalpes
+
+
+Mysql
+
+sudo apt update
+
+sudo apt install mysql-server -y
+sudo mysql_secure_installation utility
+
+sudo mysql -u root -p
+
+felhasznalo
+CREATE USER  user@'%' IDENTYFIED BY '12345';
+
+jogadas
+GRANT AL PRIVILEGES ON *.* user@'%';
+
+Ujratoltes 
+FLUSH PRIVILEGES
+
+
+sudo service mysql restart
+
+
+DHCP config
+sudo apt install-dhcp-server -y
+
+cd/etc/default/
+sudo nano isc-dhcp-server
+fogado int atirasa
+
+sudo service isc-dhcp-server restart
+
+
+
+
+
+
+
+
+
